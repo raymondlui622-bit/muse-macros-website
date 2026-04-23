@@ -85,12 +85,19 @@
     .btn-white { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #111; padding: 14px 26px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; transition: background 0.2s, transform 0.2s; }
     .btn-white:hover { background: #f0eeeb; transform: translateY(-2px); }
 
-    /* ===================== HERO (dark + animated blobs + bottle lineup) ===================== */
+    /* ===================== HERO (dark + animated blobs + product photo) ===================== */
     .hero-dark {
-      position: relative; background: #0C0A0A; overflow: hidden;
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 120px 32px 80px;
+      background: #0C0A0A;
+      display: flex; flex-direction: column;
+    }
+    .hero-top {
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      padding: 120px 32px 80px; min-height: 560px;
+    }
+    .hero-photo {
+      display: block; width: 100%; max-height: 560px;
+      object-fit: cover; object-position: center top;
     }
 
     /* Animated background blobs */
@@ -127,19 +134,6 @@
       font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400;
       color: rgba(255,255,255,0.45); letter-spacing: 0; margin-bottom: 56px;
     }
-
-    /* Bottle lineup */
-    .lineup-wrap {
-      display: flex; align-items: flex-end; justify-content: center;
-      gap: 14px; margin-bottom: 52px;
-    }
-    .hl-bottle { display: flex; flex-direction: column; align-items: center; transition: transform 0.3s ease; cursor: default; }
-    .hl-bottle:hover { transform: translateY(-12px); }
-    .hl-cap { width: 46px; height: 18px; background: #1a1a1a; border-radius: 7px 7px 3px 3px; margin-bottom: -2px; position: relative; z-index: 2; box-shadow: 0 3px 8px rgba(0,0,0,0.4); }
-    .hl-body { width: 88px; border-radius: 36px; position: relative; overflow: hidden; }
-    .hl-body::after { content: ''; position: absolute; top: 5%; left: 14%; width: 19%; height: 40%; background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%); border-radius: 50%; transform: rotate(-12deg); }
-    /* Flavor name tag */
-    .hl-name { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: -0.01em; color: rgba(255,255,255,0.55); margin-top: 10px; text-align: center; max-width: 80px; line-height: 1.3; }
 
     /* Hero CTA row */
     .hero-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
@@ -194,7 +188,9 @@
     .fwc-label .mx { font-size: 10px; color: #999; }
 
     /* ===================== BADGES WITH TOOLTIPS ===================== */
-    .badge { position: absolute; z-index: 10; cursor: default; }
+    .badge { position: absolute; z-index: 10; cursor: default; display: flex; align-items: flex-start; gap: 8px; }
+    .b-protein, .b-cal { flex-direction: column; }
+    .b-carbs, .b-fat   { flex-direction: column-reverse; }
     .badge-inner {
       background: #fff; border: 1px solid #E8E4DF; border-radius: 50px;
       padding: 9px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -204,22 +200,15 @@
     .badge-l { font-size: 12px; color: #6B6B6B; }
     /* Badge tooltip card */
     .badge-tip {
-      position: absolute; background: #111; color: #fff;
+      background: #111; color: #fff;
       border-radius: 14px; padding: 14px 16px; width: 186px;
       opacity: 0; pointer-events: none;
-      transition: opacity 0.22s ease, transform 0.22s ease;
-      z-index: 30;
+      transition: opacity 0.22s ease;
     }
     .tip-title { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 5px; }
     .tip-icon { font-size: 18px; margin-bottom: 8px; }
     .tip-body { font-size: 12px; line-height: 1.55; color: rgba(255,255,255,0.6); }
-    /* Tooltip direction: left of badge */
-    .tip-left { right: calc(100% + 12px); top: 0; transform: translateX(8px); }
-    /* Tooltip direction: right of badge */
-    .tip-right { left: calc(100% + 12px); top: 0; transform: translateX(-8px); }
-    .badge:hover .badge-tip { opacity: 1; }
-    .badge:hover .tip-left { transform: translateX(0); }
-    .badge:hover .tip-right { transform: translateX(0); }
+    .badge:hover .badge-tip { opacity: 1; pointer-events: auto; }
     /* Badge positions */
     .b-protein { top: 10%; right: -100px; animation: fl1 4s ease-in-out infinite; }
     .b-cal     { top: 38%; right: -108px; animation: fl2 4.5s ease-in-out infinite; }
@@ -253,20 +242,20 @@
 
     /* ===================== TESTIMONIALS ===================== */
     .testi-section { padding: 120px 0; background: #F7F5F2; }
-    .tgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 56px; }
-    .tcard { background: #fff; border: 1px solid #EDEAE5; border-radius: 20px; padding: 32px 26px; transition: transform 0.25s, box-shadow 0.25s; }
-    .tcard:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.07); }
-    .tcard.dark { background: #111; border-color: #111; }
-    .stars { display: flex; gap: 3px; margin-bottom: 20px; font-size: 16px; color: #F59E0B; }
-    .tcard.dark .stars { color: #FCD34D; }
-    .tquote { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 500; line-height: 1.55; letter-spacing: -0.02em; color: #111; margin-bottom: 22px; }
-    .tcard.dark .tquote { color: #fff; }
-    .tdiv { width: 32px; height: 1px; background: #E8E4DF; margin-bottom: 18px; }
-    .tcard.dark .tdiv { background: rgba(255,255,255,0.15); }
-    .tauthor { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: -0.02em; color: #111; }
-    .tcard.dark .tauthor { color: #fff; }
-    .trole { font-size: 13px; color: #9B9B9B; margin-top: 3px; }
-    .tcard.dark .trole { color: rgba(255,255,255,0.45); }
+    .tcarousel-wrap { display: flex; align-items: center; gap: 16px; margin-top: 56px; }
+    .tcar-track-outer { overflow: hidden; flex: 1; }
+    .tcar-track { display: flex; gap: 14px; transition: transform 0.4s ease; will-change: transform; }
+    .tcar-card { flex: 0 0 216px; height: 380px; border-radius: 20px; position: relative; overflow: hidden; cursor: pointer; transition: transform 0.25s ease; }
+    .tcar-card:hover { transform: scale(1.02); }
+    .tcar-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.5) 100%); }
+    .play-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; align-self: center; margin-top: auto; margin-bottom: auto; transition: background 0.2s; }
+    .tcar-card:hover .play-icon { background: rgba(255,255,255,0.35); }
+    .tcar-meta { color: white; }
+    .tcar-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: -0.02em; }
+    .tcar-flavor { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+    .tcar-btn { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #D8D4CF; background: white; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background 0.2s, border-color 0.2s, color 0.2s; }
+    .tcar-btn:hover { background: #111; color: white; border-color: #111; }
+    .tcar-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
 
     /* ===================== FAQ ===================== */
     .faq-section { padding: 120px 0; background: #fff; }
@@ -310,13 +299,6 @@
     /* ===================== RESPONSIVE ===================== */
     @media (max-width: 1024px) {
       .footer-grid { grid-template-columns: 1fr 1fr; }
-      .hl-body { width: 76px; }
-      .hl-cap { width: 40px; }
-    }
-    @media (max-width: 900px) {
-      .lineup-wrap { gap: 10px; overflow-x: auto; padding: 0 20px; justify-content: flex-start; }
-      .hl-body { width: 68px; }
-      .hl-cap { width: 36px; }
     }
     @media (max-width: 768px) {
       .nav-links, .nav-cta { display: none; }
@@ -327,7 +309,8 @@
       .b-carbs, .b-fat { left: -48px; }
       .flavor-grid { grid-template-columns: repeat(2,1fr); }
       .flavors-hdr { flex-direction: column; align-items: flex-start; }
-      .tgrid { grid-template-columns: 1fr; }
+      .tcarousel-wrap { gap: 8px; }
+      .tcar-btn { width: 36px; height: 36px; font-size: 14px; }
       .faq-layout { grid-template-columns: 1fr; gap: 48px; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .footer-bottom { flex-direction: column; align-items: flex-start; gap: 20px; }
@@ -335,7 +318,7 @@
     @media (max-width: 480px) {
       .wrap { padding: 0 20px; }
       .fwc-grid { padding: 0 20px; }
-      .hero-dark { padding: 110px 20px 72px; }
+      .hero-top { padding: 110px 20px 72px; }
       .hero-stats { gap: 24px; flex-wrap: wrap; }
       .b-protein, .b-cal, .b-carbs, .b-fat { display: none; }
       .fwc-body { width: 180px; height: 390px; }
@@ -369,96 +352,40 @@
   </div>
 </nav>
 
-<!-- ===================== HERO: PRODUCT LINEUP ===================== -->
+<!-- ===================== HERO: PRODUCT PHOTO ===================== -->
 <section class="hero-dark">
-  <!-- Animated blobs -->
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
-  <div class="blob blob-4"></div>
-  <div class="blob blob-5"></div>
-  <div class="blob blob-6"></div>
+  <div class="hero-top">
+    <!-- Animated blobs (clipped to text zone) -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <div class="blob blob-5"></div>
+    <div class="blob blob-6"></div>
 
-  <div class="hero-content">
-    <div class="hero-eyebrow reveal">
-      <span class="hero-eyebrow-dot"></span>
-      Premium Protein Smoothies · 8 Flavors
-    </div>
-    <h1 class="hero-brand reveal d1">Muse<em>Macros</em></h1>
-    <p class="hero-tagline reveal d2">Built Different. Tastes Better.</p>
-
-    <!-- 8-bottle lineup -->
-    <div class="lineup-wrap reveal d3">
-
-      <!-- Ube Coconut — 230px -->
-      <div class="hl-bottle">
-        <div class="hl-cap"></div>
-        <div class="hl-body" style="height:230px; background:linear-gradient(155deg,#7C3AED,#A78BFA); box-shadow:-6px 10px 40px rgba(124,58,237,0.45),0 8px 24px rgba(0,0,0,0.3);"></div>
-        <div class="hl-name">Ube Coconut</div>
+    <div class="hero-content">
+      <div class="hero-eyebrow reveal">
+        <span class="hero-eyebrow-dot"></span>
+        Premium Protein Smoothies · 8 Flavors
       </div>
+      <h1 class="hero-brand reveal d1">Muse<em>Macros</em></h1>
+      <p class="hero-tagline reveal d2">Built Different. Tastes Better.</p>
 
-      <!-- Dragon Fruit — 248px -->
-      <div class="hl-bottle">
-        <div class="hl-cap"></div>
-        <div class="hl-body" style="height:248px; background:linear-gradient(155deg,#EC4899,#F43F5E); box-shadow:-6px 10px 40px rgba(236,72,153,0.45),0 8px 24px rgba(0,0,0,0.3);"></div>
-        <div class="hl-name">Dragon Fruit</div>
-      </div>
-
-      <!-- Mango Sticky Rice — 262px -->
-      <div class="hl-bottle">
-        <div class="hl-cap"></div>
-        <div class="hl-body" style="height:262px; background:linear-gradient(155deg,#F59E0B,#FDE68A); box-shadow:-6px 10px 40px rgba(245,158,11,0.4),0 8px 24px rgba(0,0,0,0.3);"></div>
-        <div class="hl-name">Mango Sticky Rice</div>
-      </div>
-
-      <!-- Lychee — 274px -->
-      <div class="hl-bottle">
-        <div class="hl-cap"></div>
-        <div class="hl-body" style="height:274px; background:linear-gradient(155deg,#F9A8D4,#FBCFE8); box-shadow:-6px 10px 40px rgba(249,168,212,0.5),0 8px 24px rgba(0,0,0,0.3);"></div>
-        <div class="hl-name">Lychee</div>
-      </div>
-
-      <!-- Pandan — 274px -->
-      <div class="hl-bottle">
-        <div class="hl-cap"></div>
-        <div class="hl-body" style="height:274px; background:linear-gradient(155deg,#16A34A,#4ADE80); box-shadow:-6px 10px 40px rgba(22,163,74,0.45),0 8px 24px rgba(0,0,0,0.3);"></div>
-        <div class="hl-name">Pandan</div>
-      </div>
-
-      <!-- Calamansi — 262px -->
-      <div class="hl-bottle">
-        <div class="hl-cap"></div>
-        <div class="hl-body" style="height:262px; background:linear-gradient(155deg,#84CC16,#FDE047); box-shadow:-6px 10px 40px rgba(132,204,22,0.4),0 8px 24px rgba(0,0,0,0.3);"></div>
-        <div class="hl-name">Calamansi</div>
-      </div>
-
-      <!-- Korean Pear — 248px -->
-      <div class="hl-bottle">
-        <div class="hl-cap"></div>
-        <div class="hl-body" style="height:248px; background:linear-gradient(155deg,#C8C8A0,#A3A380); box-shadow:-6px 10px 36px rgba(163,163,128,0.35),0 8px 24px rgba(0,0,0,0.3);"></div>
-        <div class="hl-name">Korean Pear</div>
-      </div>
-
-      <!-- Passionfruit — 230px -->
-      <div class="hl-bottle">
-        <div class="hl-cap"></div>
-        <div class="hl-body" style="height:230px; background:linear-gradient(155deg,#EA580C,#FCD34D); box-shadow:-6px 10px 40px rgba(234,88,12,0.45),0 8px 24px rgba(0,0,0,0.3);"></div>
-        <div class="hl-name">Passionfruit</div>
+      <div class="hero-cta-row reveal d3">
+        <a href="#flavors" class="btn-hero-primary">
+          Shop Now
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#fwc" class="btn-hero-outline">See the Details</a>
       </div>
     </div>
 
-    <div class="hero-cta-row reveal d4">
-      <a href="#flavors" class="btn-hero-primary">
-        Shop Now
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="#fwc" class="btn-hero-outline">See the Details</a>
+    <div class="scroll-hint">
+      <div class="scroll-hint-line"></div>
     </div>
   </div>
 
-  <div class="scroll-hint">
-    <div class="scroll-hint-line"></div>
-  </div>
+  <img src="6ec75e22-4b1d-4e31-ba86-533f8e72dc40.png" alt="Muse Macros protein smoothie lineup" class="hero-photo">
 </section>
 
 <!-- MARQUEE -->
@@ -735,28 +662,80 @@
       <div class="eyebrow reveal" style="justify-content:center;">Real People. Real Results.</div>
       <h2 class="h2 reveal d1" style="text-align:center;">The smoothie you'll<br>actually finish.</h2>
     </div>
-    <div class="tgrid">
-      <div class="tcard reveal d1">
-        <div class="stars">★★★★★</div>
-        <p class="tquote">"The Ube Coconut is unlike anything I've ever had. Tastes like a dessert, hits like a post-workout. I've been going through two a week."</p>
-        <div class="tdiv"></div>
-        <div class="tauthor">Maya T.</div>
-        <div class="trole">Competitive cyclist, Toronto</div>
+    <div class="tcarousel-wrap reveal d2">
+      <button class="tcar-btn tcar-prev" aria-label="Previous">&#8592;</button>
+      <div class="tcar-track-outer">
+        <div class="tcar-track" id="tcarTrack">
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #7C3AED, #A78BFA);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Maya T.</div>
+                <div class="tcar-flavor">Ube Coconut</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #16A34A, #4ADE80);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">James K.</div>
+                <div class="tcar-flavor">Pandan</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #EC4899, #F43F5E);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Sophie & Rafael</div>
+                <div class="tcar-flavor">Dragon Fruit</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #D97706, #F59E0B);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Alex M.</div>
+                <div class="tcar-flavor">Mango Sticky Rice</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #EA580C, #FB923C);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Taylor C.</div>
+                <div class="tcar-flavor">Passionfruit</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #65A30D, #84CC16);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Jordan K.</div>
+                <div class="tcar-flavor">Calamansi</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
-      <div class="tcard dark reveal d2">
-        <div class="stars">★★★★★</div>
-        <p class="tquote">"I've tried every protein smoothie brand I could find. Muse Macros is the first one where I actually look forward to drinking it. The Pandan flavor is wild."</p>
-        <div class="tdiv"></div>
-        <div class="tauthor">James K.</div>
-        <div class="trole">Personal trainer, Vancouver</div>
-      </div>
-      <div class="tcard reveal d3">
-        <div class="stars">★★★★★</div>
-        <p class="tquote">"Finally — something that doesn't taste like chalk in a bottle. Dragon Fruit has become my morning ritual. My whole gym is hooked."</p>
-        <div class="tdiv"></div>
-        <div class="tauthor">Sophie & Rafael</div>
-        <div class="trole">CrossFit coaches, Montreal</div>
-      </div>
+      <button class="tcar-btn tcar-next" aria-label="Next">&#8594;</button>
     </div>
   </div>
 </section>
@@ -916,6 +895,36 @@
   document.querySelectorAll('.hero-dark .reveal').forEach(el => {
     setTimeout(() => el.classList.add('visible'), 100);
   });
+
+  // Testimonial carousel
+  (function() {
+    const track = document.getElementById('tcarTrack');
+    if (!track) return;
+    const prev = document.querySelector('.tcar-prev');
+    const next = document.querySelector('.tcar-next');
+    const cardW = 216 + 14;
+    let idx = 0;
+    const totalCards = track.querySelectorAll('.tcar-card').length;
+
+    function update() {
+      const visible = Math.floor(track.parentElement.offsetWidth / cardW);
+      const maxIdx = Math.max(0, totalCards - visible);
+      idx = Math.min(idx, maxIdx);
+      track.style.transform = `translateX(-${idx * cardW}px)`;
+      prev.disabled = idx === 0;
+      next.disabled = idx >= maxIdx;
+    }
+
+    prev.addEventListener('click', () => { idx = Math.max(0, idx - 1); update(); });
+    next.addEventListener('click', () => {
+      const visible = Math.floor(track.parentElement.offsetWidth / cardW);
+      idx = Math.min(totalCards - visible, idx + 1);
+      update();
+    });
+
+    update();
+    window.addEventListener('resize', update);
+  })();
 
   // FAQ accordion
   function toggleFaq(trigger) {
