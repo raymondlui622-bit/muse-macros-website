@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muse Macros — Protein Smoothies Built Different</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #F7F5F2; font-family: 'Inter', -apple-system, sans-serif; color: #111; -webkit-font-smoothing: antialiased; }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+    .d4{transition-delay:.4s} .d5{transition-delay:.5s} .d6{transition-delay:.6s}
+    .d7{transition-delay:.7s} .d8{transition-delay:.8s}
+
+    /* ===================== NAV — dark glassmorphism always ===================== */
+    .nav-wrap {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(0, 0, 0, 0.26);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+    .nav-wrap.scrolled {
+      background: rgba(0, 0, 0, 0.64);
+      border-bottom-color: rgba(255,255,255,0.11);
+    }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; height: 68px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.04em; color: #fff; text-decoration: none; }
+    .logo span { color: rgba(130,210,150,1); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      background: rgba(255,255,255,0.11); color: #fff;
+      border: 1px solid rgba(255,255,255,0.26);
+      padding: 10px 22px; border-radius: 50px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: -0.02em;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: rgba(255,255,255,0.20); transform: translateY(-1px); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.25s; }
+    .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav { display: none; background: rgba(0,0,0,0.90); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.07); padding: 16px 32px 24px; }
+    .mobile-nav.open { display: block; }
+    .mobile-nav a { display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.82); text-decoration: none; letter-spacing: -0.02em; }
+    .mobile-nav a:last-child { border: none; color: rgba(130,210,150,1); margin-top: 4px; }
+
+    /* Section wrap */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    /* Eyebrow */
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #6B6B6B; margin-bottom: 14px; }
+    .eyebrow-accent { color: #3D6B47; }
+    .eyebrow-dot { width: 6px; height: 6px; background: currentColor; border-radius: 50%; }
+
+    /* Headings */
+    .h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(46px, 5.5vw, 80px); font-weight: 700; line-height: 0.97; letter-spacing: -0.045em; color: #111; margin-bottom: 24px; }
+    .h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px, 4vw, 56px); font-weight: 700; line-height: 1.02; letter-spacing: -0.04em; color: #111; margin-bottom: 14px; }
+
+    /* Buttons */
+    .btn-dark { display: inline-flex; align-items: center; gap: 8px; background: #111; color: #fff; padding: 15px 28px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -0.02em; text-decoration: none; transition: background 0.2s, transform 0.2s, box-shadow 0.2s; }
+    .btn-dark:hover { background: #2a2a2a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: #111; border: 1.5px solid #D8D4CF; padding: 14px 28px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -0.02em; text-decoration: none; transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+    .btn-ghost:hover { border-color: #111; background: rgba(17,17,17,0.04); transform: translateY(-2px); }
+    .btn-white { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #111; padding: 14px 26px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+    .btn-white:hover { background: #f0eeeb; transform: translateY(-2px); }
+
+    /* ===================== HERO — full bg image ===================== */
+    .hero-bg {
+      position: relative;
+      min-height: 100vh;
+      background: url('hero-image-test.png') center bottom / cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.84) 0%,
+        rgba(0,0,0,0.64) 26%,
+        rgba(0,0,0,0.28) 50%,
+        rgba(0,0,0,0.05) 66%,
+        transparent 76%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 148px 32px 100px;
+      max-width: 760px;
+      width: 100%;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.46); margin-bottom: 20px;
+    }
+    .hero-eyebrow-dot { width: 5px; height: 5px; background: rgba(130,210,150,0.85); border-radius: 50%; }
+    .hero-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(52px, 8vw, 112px);
+      font-weight: 700; letter-spacing: -0.05em; line-height: 0.92;
+      color: #fff; margin-bottom: 16px;
+    }
+    .hero-brand em { color: rgba(130,210,150,0.9); font-style: normal; }
+    .hero-tagline {
+      font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400;
+      color: rgba(255,255,255,0.50); letter-spacing: 0; margin-bottom: 48px;
+    }
+    .hero-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-hero-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; color: #111;
+      padding: 15px 30px; border-radius: 50px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: -0.02em;
+      text-decoration: none; transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-hero-primary:hover { background: #f0eeeb; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(255,255,255,0.14); }
+    .btn-hero-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: rgba(255,255,255,0.82);
+      border: 1.5px solid rgba(255,255,255,0.26);
+      padding: 14px 30px; border-radius: 50px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -0.02em;
+      text-decoration: none; transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .btn-hero-outline:hover { border-color: rgba(255,255,255,0.52); background: rgba(255,255,255,0.07); transform: translateY(-2px); }
+
+    /* ===================== MARQUEE ===================== */
+    .marquee-section { background: #111; padding: 18px 0; overflow: hidden; }
+    .marquee-track { display: flex; animation: marquee 22s linear infinite; white-space: nowrap; }
+    .marquee-item { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.5); padding: 0 40px; flex-shrink: 0; }
+    .marquee-item span { color: rgba(255,255,255,0.2); margin-left: 40px; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ===================== SECTION 2: "Flavor without compromise" ===================== */
+    .fwc-section { background: #F7F5F2; padding: 120px 0 112px; }
+    .fwc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .hero-sub { font-size: 17px; line-height: 1.65; color: #6B6B6B; max-width: 440px; margin-bottom: 40px; }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-stats { display: flex; gap: 40px; margin-top: 48px; padding-top: 40px; border-top: 1px solid #E8E4DF; }
+    .stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; letter-spacing: -0.04em; color: #111; }
+    .stat-lbl { font-size: 13px; color: #9B9B9B; margin-top: 3px; }
+
+    /* Bottle */
+    .fwc-visual { display: flex; justify-content: center; align-items: center; }
+    .bottle-wrapper { display: flex; flex-direction: column; align-items: center; overflow: visible; }
+    .fwc-bottle-outer { position: relative; display: inline-block; overflow: visible; }
+    .fwc-cap { width: 52%; height: 36px; background: #1a1a1a; border-radius: 10px 10px 6px 6px; margin: 0 auto -3px; position: relative; z-index: 2; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    .fwc-body { width: 220px; height: 480px; background: linear-gradient(145deg, #7C3AED 0%, #9D6FEF 45%, #A78BFA 100%); border-radius: 52px; position: relative; overflow: hidden; box-shadow: -12px 16px 56px rgba(124,58,237,0.32), 12px 24px 64px rgba(0,0,0,0.14), inset -6px 0 24px rgba(0,0,0,0.08), inset 12px 0 28px rgba(255,255,255,0.07); }
+    .fwc-body::after { content: ''; position: absolute; top: 4%; left: 13%; width: 22%; height: 44%; background: linear-gradient(180deg, rgba(255,255,255,0.38) 0%, transparent 100%); border-radius: 50%; transform: rotate(-14deg); }
+    .fwc-label { position: absolute; bottom: 20%; left: 9%; right: 9%; background: rgba(255,255,255,0.94); border-radius: 14px; padding: 14px 12px; text-align: center; backdrop-filter: blur(8px); }
+    .fwc-label .lb { font-family: 'Space Grotesk', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #aaa; }
+    .fwc-label .fl { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: #7C3AED; margin: 4px 0 3px; }
+    .fwc-label .mx { font-size: 10px; color: #999; }
+
+    /* ===================== MACRO ORBIT BADGES ===================== */
+    .badge {
+      position: absolute;
+      cursor: pointer;
+      z-index: 10;
+      transition: opacity 0.25s ease;
+    }
+    .badge-pill {
+      background: #fff;
+      border: 1px solid #E8E4DF;
+      border-radius: 50px;
+      padding: 9px 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      white-space: nowrap;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .badge:hover .badge-pill {
+      transform: scale(1.07);
+      filter: brightness(1.06);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+    }
+    .badge-v { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: -0.03em; color: #111; }
+    .badge-l { font-size: 12px; color: #6B6B6B; }
+
+    /* Right side — primary emphasis: Protein + Calories */
+    .b-protein { top: 16%; right: -106px; }
+    .b-cal     { top: 43%; right: -106px; }
+
+    /* Left side — secondary, slightly smaller: Carbs + Fat */
+    .b-carbs { top: 26%; left: -94px; }
+    .b-fat   { top: 52%; left: -94px; }
+
+    .b-carbs .badge-pill,
+    .b-fat .badge-pill {
+      padding: 7px 13px;
+    }
+    .b-carbs .badge-v,
+    .b-fat .badge-v { font-size: 15px; opacity: 0.8; }
+    .b-carbs .badge-l,
+    .b-fat .badge-l { font-size: 11px; opacity: 0.75; }
+
+    /* Fade non-hovered siblings */
+    .fwc-bottle-outer:has(.badge:hover) .badge:not(:hover) {
+      opacity: 0.60;
+    }
+
+    /* Tooltip panel */
+    .badge-tooltip {
+      position: absolute;
+      top: 50%;
+      background: #111;
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      width: 180px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 30;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    .tip-title { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+    .tip-icon { font-size: 18px; margin-bottom: 7px; }
+    .tip-body { font-size: 12px; line-height: 1.55; color: rgba(255,255,255,0.6); }
+
+    /* Right-side tooltips: slide in from the right */
+    .b-protein .badge-tooltip,
+    .b-cal .badge-tooltip {
+      left: calc(100% + 10px);
+      transform: translateY(-50%) translateX(8px);
+    }
+    .b-protein:hover .badge-tooltip,
+    .b-cal:hover .badge-tooltip {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+      pointer-events: auto;
+    }
+
+    /* Left-side tooltips: slide in from the left */
+    .b-carbs .badge-tooltip,
+    .b-fat .badge-tooltip {
+      right: calc(100% + 10px);
+      transform: translateY(-50%) translateX(-8px);
+    }
+    .b-carbs:hover .badge-tooltip,
+    .b-fat:hover .badge-tooltip {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+      pointer-events: auto;
+    }
+
+    /* Mobile macro grid (shown instead of orbit badges) */
+    .macro-mobile-grid {
+      display: none;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin-top: 22px;
+      width: 220px;
+    }
+    .macro-m-cell { background: #fff; border: 1px solid #E8E4DF; border-radius: 12px; padding: 10px 6px; text-align: center; }
+    .macro-m-v { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: #111; }
+    .macro-m-l { font-size: 10px; color: #9B9B9B; margin-top: 2px; }
+
+    /* ===================== FLAVORS ===================== */
+    .flavors-section { padding: 108px 0 120px; background: #fff; }
+    .flavors-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; gap: 24px; }
+    .flavor-badge { display: inline-flex; align-items: center; gap: 6px; background: #F7F5F2; border: 1px solid #E8E4DF; border-radius: 50px; padding: 8px 18px; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: #6B6B6B; white-space: nowrap; }
+    .flavor-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .fcard { background: #F7F5F2; border: 1px solid #EDEAE5; border-radius: 20px; padding: 20px 14px 18px; cursor: pointer; transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.2s; }
+    .fcard:hover { transform: translateY(-8px); box-shadow: 0 24px 64px rgba(0,0,0,0.09); border-color: transparent; }
+    .cap-wrap { display: flex; justify-content: center; margin-bottom: 14px; }
+    .cap-outer { display: flex; flex-direction: column; align-items: center; }
+    .cap-top { width: 34px; height: 17px; background: #1a1a1a; border-radius: 6px 6px 2px 2px; margin-bottom: -2px; position: relative; z-index: 2; }
+    .cap-body { width: 78px; height: 178px; border-radius: 40px; position: relative; overflow: hidden; box-shadow: inset -4px 0 16px rgba(0,0,0,0.12), 0 12px 36px rgba(0,0,0,0.11); }
+    .cap-body::after { content: ''; position: absolute; top: 5%; left: 15%; width: 20%; height: 38%; background: linear-gradient(180deg, rgba(255,255,255,0.36) 0%, transparent 100%); border-radius: 50%; transform: rotate(-10deg); }
+    .cap-lbl { position: absolute; bottom: 14%; left: 7%; right: 7%; background: rgba(255,255,255,0.92); border-radius: 8px; padding: 5px 6px; text-align: center; }
+    .cap-brand { font-family: 'Space Grotesk', sans-serif; font-size: 6px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #aaa; }
+    .cap-name { font-family: 'Space Grotesk', sans-serif; font-size: 8px; font-weight: 700; line-height: 1.2; margin-top: 2px; }
+    .fn { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: -0.02em; color: #111; text-align: center; margin-bottom: 4px; }
+    .fd { font-size: 11px; color: #9B9B9B; text-align: center; margin-bottom: 13px; line-height: 1.4; }
+    .macro-row { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+    .mc { background: #fff; border-radius: 10px; padding: 8px 4px; text-align: center; }
+    .mv { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: -0.02em; color: #111; }
+    .ml { font-size: 9px; color: #B0B0B0; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+
+    /* ===================== TESTIMONIALS ===================== */
+    .testi-section { padding: 120px 0; background: #F7F5F2; }
+    .tcarousel-wrap { display: flex; align-items: center; gap: 16px; margin-top: 56px; }
+    .tcar-track-outer { overflow: hidden; flex: 1; }
+    .tcar-track { display: flex; gap: 14px; transition: transform 0.4s ease; will-change: transform; }
+    .tcar-card { flex: 0 0 216px; height: 380px; border-radius: 20px; position: relative; overflow: hidden; cursor: pointer; transition: transform 0.25s ease; }
+    .tcar-card:hover { transform: scale(1.02); }
+    .tcar-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.5) 100%); }
+    .play-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; align-self: center; margin-top: auto; margin-bottom: auto; transition: background 0.2s; }
+    .tcar-card:hover .play-icon { background: rgba(255,255,255,0.35); }
+    .tcar-meta { color: white; }
+    .tcar-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: -0.02em; }
+    .tcar-flavor { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+    .tcar-btn { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #D8D4CF; background: white; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background 0.2s, border-color 0.2s, color 0.2s; }
+    .tcar-btn:hover { background: #111; color: white; border-color: #111; }
+    .tcar-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+
+    /* ===================== FAQ ===================== */
+    .faq-section { padding: 120px 0; background: #fff; }
+    .faq-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; align-items: start; }
+    .faq-item { border-bottom: 1px solid #E8E4DF; }
+    .faq-trigger { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; cursor: pointer; user-select: none; }
+    .faq-q { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -0.02em; color: #111; padding-right: 16px; line-height: 1.4; transition: color 0.2s; }
+    .faq-trigger:hover .faq-q { color: #3D6B47; }
+    .faq-icon { width: 28px; height: 28px; border: 1.5px solid #D8D4CF; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; line-height: 1; color: #111; transition: transform 0.3s, background 0.2s, border-color 0.2s; }
+    .faq-item.active .faq-icon { transform: rotate(45deg); background: #111; color: #fff; border-color: #111; }
+    .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.38s ease; }
+    .faq-body.open { max-height: 300px; }
+    .faq-a { padding-bottom: 22px; font-size: 15px; line-height: 1.7; color: #6B6B6B; }
+    .faq-side { background: #111; border-radius: 24px; padding: 48px 40px; color: #fff; }
+    .faq-side-h { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 14px; }
+    .faq-side-p { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.55); margin-bottom: 32px; }
+
+    /* ===================== FOOTER V2 — Brand Moment ===================== */
+    .footer-v2 {
+      background: #0C0A0A;
+      color: #fff;
+      padding: 100px 32px 56px;
+      text-align: center;
+    }
+    .footer-v2-inner {
+      max-width: 580px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .footer-v2-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: #fff;
+      margin-bottom: 36px;
+    }
+    .footer-v2-logo span { color: #7FB98A; }
+    .footer-v2-statement {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(26px, 4.5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      color: #fff;
+      margin-bottom: 36px;
+    }
+    .btn-footer-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: #111;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      margin-bottom: 68px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-footer-cta:hover { background: #f0eeeb; transform: translateY(-2px); }
+    .footer-v2-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 32px;
+    }
+    .footer-v2-links {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer-v2-links a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.42);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-v2-links a:hover { color: #fff; }
+    .footer-v2-socials {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .footer-v2-soc {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .footer-v2-soc:hover { background: rgba(255,255,255,0.15); }
+    .footer-v2-copy { font-size: 12px; color: rgba(255,255,255,0.22); }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .fwc-grid { grid-template-columns: 1fr; }
+      .fwc-visual { margin-top: 60px; }
+      .b-protein, .b-cal, .b-carbs, .b-fat { display: none; }
+      .macro-mobile-grid { display: grid; }
+      .flavor-grid { grid-template-columns: repeat(2,1fr); }
+      .flavors-hdr { flex-direction: column; align-items: flex-start; }
+      .tcarousel-wrap { gap: 8px; }
+      .tcar-btn { width: 36px; height: 36px; font-size: 14px; }
+      .faq-layout { grid-template-columns: 1fr; gap: 48px; }
+      .hero-content { padding: 110px 24px 80px; }
+    }
+    @media (max-width: 480px) {
+      .wrap { padding: 0 20px; }
+      .fwc-grid { padding: 0 20px; }
+      .hero-bg { min-height: 110vh; }
+      .hero-content { padding: 100px 20px 64px; }
+      .hero-stats { gap: 24px; flex-wrap: wrap; }
+      .fwc-body { width: 180px; height: 390px; }
+      .footer-v2 { padding: 72px 20px 40px; }
+      .footer-v2-statement { font-size: 24px; }
+      .footer-v2-links { gap: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav-wrap" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">Muse<span>Macros</span></a>
+    <ul class="nav-links">
+      <li><a href="#flavors">Flavors</a></li>
+      <li><a href="#fwc">Why Us</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#flavors" class="nav-cta">Shop Now</a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="#flavors">Flavors</a>
+    <a href="#fwc">Why Us</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#faq">FAQ</a>
+    <a href="#flavors">Shop Now →</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO: FULL BG IMAGE ===================== -->
+<section class="hero-bg">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow reveal">
+      <span class="hero-eyebrow-dot"></span>
+      Premium Protein Smoothies · 8 Flavors
+    </div>
+    <h1 class="hero-brand reveal d1">Muse<em>Macros</em></h1>
+    <p class="hero-tagline reveal d2">Built Different. Tastes Better.</p>
+    <div class="hero-cta-row reveal d3">
+      <a href="#flavors" class="btn-hero-primary">
+        Shop Now
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#fwc" class="btn-hero-outline">Explore Flavors</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">30g Protein <span>✦</span></span>
+    <span class="marquee-item">8 Asian-Inspired Flavors <span>✦</span></span>
+    <span class="marquee-item">Cold-Blended Fresh <span>✦</span></span>
+    <span class="marquee-item">No Artificial Fillers <span>✦</span></span>
+    <span class="marquee-item">Macro-Optimized <span>✦</span></span>
+    <span class="marquee-item">Whole Ingredients Only <span>✦</span></span>
+    <span class="marquee-item">30g Protein <span>✦</span></span>
+    <span class="marquee-item">8 Asian-Inspired Flavors <span>✦</span></span>
+    <span class="marquee-item">Cold-Blended Fresh <span>✦</span></span>
+    <span class="marquee-item">No Artificial Fillers <span>✦</span></span>
+    <span class="marquee-item">Macro-Optimized <span>✦</span></span>
+    <span class="marquee-item">Whole Ingredients Only <span>✦</span></span>
+  </div>
+</div>
+
+<!-- ===================== SECTION 2: FLAVOR WITHOUT COMPROMISE ===================== -->
+<section class="fwc-section" id="fwc">
+  <div class="fwc-grid">
+
+    <!-- Left: Copy -->
+    <div>
+      <div class="eyebrow eyebrow-accent reveal">
+        <span class="eyebrow-dot"></span>
+        Premium Protein Smoothies
+      </div>
+      <h1 class="h1 reveal d1">Flavor<br>without<br>compromise.</h1>
+      <p class="hero-sub reveal d2">8 bold Asian-inspired flavors. 30g of real protein. Cold-blended fresh — never powdered down.</p>
+      <div class="hero-ctas reveal d3">
+        <a href="#flavors" class="btn-dark">
+          Shop Now
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#flavors" class="btn-ghost">View Flavors</a>
+      </div>
+      <div class="hero-stats reveal d4">
+        <div><div class="stat-val">30g</div><div class="stat-lbl">Protein per bottle</div></div>
+        <div><div class="stat-val">8</div><div class="stat-lbl">Unique flavors</div></div>
+        <div><div class="stat-val">0</div><div class="stat-lbl">Artificial fillers</div></div>
+      </div>
+    </div>
+
+    <!-- Right: Bottle + orbit macro badges -->
+    <div class="fwc-visual reveal d2">
+      <div class="bottle-wrapper">
+        <div class="fwc-bottle-outer">
+          <div class="fwc-cap"></div>
+          <div class="fwc-body">
+            <div class="fwc-label">
+              <div class="lb">Muse Macros</div>
+              <div class="fl">Ube Coconut</div>
+              <div class="mx">30g protein · 275 cal</div>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDE: Protein (primary) -->
+          <div class="badge b-protein">
+            <div class="badge-pill">
+              <div class="badge-v">30g</div>
+              <div class="badge-l">Protein</div>
+            </div>
+            <div class="badge-tooltip">
+              <div class="tip-icon">📊</div>
+              <div class="tip-title">Macro-Optimized</div>
+              <div class="tip-body">28–31g protein per bottle, dialed to under 300 cal. Macros printed front and center.</div>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDE: Calories (primary) -->
+          <div class="badge b-cal">
+            <div class="badge-pill">
+              <div class="badge-v">275</div>
+              <div class="badge-l">Calories</div>
+            </div>
+            <div class="badge-tooltip">
+              <div class="tip-icon">❄️</div>
+              <div class="tip-title">Cold-Blended Fresh</div>
+              <div class="tip-body">Blended to order within 48hrs. Kept cold from blend to bottle — never heat-pasteurized.</div>
+            </div>
+          </div>
+
+          <!-- LEFT SIDE: Carbs (secondary) -->
+          <div class="badge b-carbs">
+            <div class="badge-pill">
+              <div class="badge-v">22g</div>
+              <div class="badge-l">Carbs</div>
+            </div>
+            <div class="badge-tooltip">
+              <div class="tip-icon">🌿</div>
+              <div class="tip-title">Whole Ingredients</div>
+              <div class="tip-body">Real fruits, never concentrates. Every ingredient is readable — no chemical names.</div>
+            </div>
+          </div>
+
+          <!-- LEFT SIDE: Fat (secondary) -->
+          <div class="badge b-fat">
+            <div class="badge-pill">
+              <div class="badge-v">7g</div>
+              <div class="badge-l">Fat</div>
+            </div>
+            <div class="badge-tooltip">
+              <div class="tip-icon">✦</div>
+              <div class="tip-title">No Artificial Fillers</div>
+              <div class="tip-body">Zero gums, sweeteners, or additives. Sweetness from real fruit and raw honey only.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Mobile macro grid (replaces orbit badges on small screens) -->
+        <div class="macro-mobile-grid">
+          <div class="macro-m-cell"><div class="macro-m-v">30g</div><div class="macro-m-l">Protein</div></div>
+          <div class="macro-m-cell"><div class="macro-m-v">275</div><div class="macro-m-l">Cal</div></div>
+          <div class="macro-m-cell"><div class="macro-m-v">22g</div><div class="macro-m-l">Carbs</div></div>
+          <div class="macro-m-cell"><div class="macro-m-v">7g</div><div class="macro-m-l">Fat</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== FLAVORS ===================== -->
+<section class="flavors-section" id="flavors">
+  <div class="wrap">
+    <div class="flavors-hdr">
+      <div>
+        <div class="eyebrow reveal">The Lineup</div>
+        <h2 class="h2 reveal d1">8 flavors.<br>Zero boring.</h2>
+      </div>
+      <div class="flavor-badge reveal d2">8 flavors available now</div>
+    </div>
+
+    <div class="flavor-grid">
+
+      <div class="fcard reveal">
+        <div class="cap-wrap"><div class="cap-outer">
+          <div class="cap-top"></div>
+          <div class="cap-body" style="background:linear-gradient(155deg,#7C3AED,#A78BFA);">
+            <div class="cap-lbl"><div class="cap-brand">Muse Macros</div><div class="cap-name" style="color:#7C3AED;">Ube<br>Coconut</div></div>
+          </div>
+        </div></div>
+        <div class="fn">Ube Coconut</div>
+        <div class="fd">Purple yam · toasted coconut</div>
+        <div class="macro-row">
+          <div class="mc"><div class="mv">30g</div><div class="ml">Protein</div></div>
+          <div class="mc"><div class="mv">275</div><div class="ml">Cal</div></div>
+          <div class="mc"><div class="mv">22g</div><div class="ml">Carbs</div></div>
+          <div class="mc"><div class="mv">7g</div><div class="ml">Fat</div></div>
+        </div>
+      </div>
+
+      <div class="fcard reveal d1">
+        <div class="cap-wrap"><div class="cap-outer">
+          <div class="cap-top"></div>
+          <div class="cap-body" style="background:linear-gradient(155deg,#EC4899,#F43F5E);">
+            <div class="cap-lbl"><div class="cap-brand">Muse Macros</div><div class="cap-name" style="color:#EC4899;">Dragon<br>Fruit</div></div>
+          </div>
+        </div></div>
+        <div class="fn">Dragon Fruit</div>
+        <div class="fd">Pitaya · hibiscus · lime zest</div>
+        <div class="macro-row">
+          <div class="mc"><div class="mv">29g</div><div class="ml">Protein</div></div>
+          <div class="mc"><div class="mv">233</div><div class="ml">Cal</div></div>
+          <div class="mc"><div class="mv">18g</div><div class="ml">Carbs</div></div>
+          <div class="mc"><div class="mv">5g</div><div class="ml">Fat</div></div>
+        </div>
+      </div>
+
+      <div class="fcard reveal d2">
+        <div class="cap-wrap"><div class="cap-outer">
+          <div class="cap-top"></div>
+          <div class="cap-body" style="background:linear-gradient(155deg,#F59E0B,#FDE68A);">
+            <div class="cap-lbl"><div class="cap-brand">Muse Macros</div><div class="cap-name" style="color:#B45309;">Mango<br>Sticky Rice</div></div>
+          </div>
+        </div></div>
+        <div class="fn">Mango Sticky Rice</div>
+        <div class="fd">Ataulfo mango · jasmine · coconut milk</div>
+        <div class="macro-row">
+          <div class="mc"><div class="mv">28g</div><div class="ml">Protein</div></div>
+          <div class="mc"><div class="mv">256</div><div class="ml">Cal</div></div>
+          <div class="mc"><div class="mv">28g</div><div class="ml">Carbs</div></div>
+          <div class="mc"><div class="mv">4g</div><div class="ml">Fat</div></div>
+        </div>
+      </div>
+
+      <div class="fcard reveal d3">
+        <div class="cap-wrap"><div class="cap-outer">
+          <div class="cap-top"></div>
+          <div class="cap-body" style="background:linear-gradient(155deg,#F9A8D4,#FBCFE8);">
+            <div class="cap-lbl"><div class="cap-brand">Muse Macros</div><div class="cap-name" style="color:#BE185D;">Lychee</div></div>
+          </div>
+        </div></div>
+        <div class="fn">Lychee</div>
+        <div class="fd">Fresh lychee · rose water · white grape</div>
+        <div class="macro-row">
+          <div class="mc"><div class="mv">30g</div><div class="ml">Protein</div></div>
+          <div class="mc"><div class="mv">220</div><div class="ml">Cal</div></div>
+          <div class="mc"><div class="mv">16g</div><div class="ml">Carbs</div></div>
+          <div class="mc"><div class="mv">4g</div><div class="ml">Fat</div></div>
+        </div>
+      </div>
+
+      <div class="fcard reveal d4">
+        <div class="cap-wrap"><div class="cap-outer">
+          <div class="cap-top"></div>
+          <div class="cap-body" style="background:linear-gradient(155deg,#16A34A,#4ADE80);">
+            <div class="cap-lbl"><div class="cap-brand">Muse Macros</div><div class="cap-name" style="color:#15803D;">Pandan</div></div>
+          </div>
+        </div></div>
+        <div class="fn">Pandan</div>
+        <div class="fd">Screwpine leaf · vanilla · coconut cream</div>
+        <div class="macro-row">
+          <div class="mc"><div class="mv">31g</div><div class="ml">Protein</div></div>
+          <div class="mc"><div class="mv">254</div><div class="ml">Cal</div></div>
+          <div class="mc"><div class="mv">20g</div><div class="ml">Carbs</div></div>
+          <div class="mc"><div class="mv">6g</div><div class="ml">Fat</div></div>
+        </div>
+      </div>
+
+      <div class="fcard reveal d5">
+        <div class="cap-wrap"><div class="cap-outer">
+          <div class="cap-top"></div>
+          <div class="cap-body" style="background:linear-gradient(155deg,#84CC16,#FDE047);">
+            <div class="cap-lbl"><div class="cap-brand">Muse Macros</div><div class="cap-name" style="color:#4D7C0F;">Calamansi</div></div>
+          </div>
+        </div></div>
+        <div class="fn">Calamansi</div>
+        <div class="fd">Filipino citrus · ginger · honey</div>
+        <div class="macro-row">
+          <div class="mc"><div class="mv">29g</div><div class="ml">Protein</div></div>
+          <div class="mc"><div class="mv">228</div><div class="ml">Cal</div></div>
+          <div class="mc"><div class="mv">19g</div><div class="ml">Carbs</div></div>
+          <div class="mc"><div class="mv">4g</div><div class="ml">Fat</div></div>
+        </div>
+      </div>
+
+      <div class="fcard reveal d6">
+        <div class="cap-wrap"><div class="cap-outer">
+          <div class="cap-top"></div>
+          <div class="cap-body" style="background:linear-gradient(155deg,#C8C8A0,#A3A380);">
+            <div class="cap-lbl"><div class="cap-brand">Muse Macros</div><div class="cap-name" style="color:#57534E;">Korean<br>Pear</div></div>
+          </div>
+        </div></div>
+        <div class="fn">Korean Pear</div>
+        <div class="fd">Asian pear · jasmine green tea · mint</div>
+        <div class="macro-row">
+          <div class="mc"><div class="mv">30g</div><div class="ml">Protein</div></div>
+          <div class="mc"><div class="mv">261</div><div class="ml">Cal</div></div>
+          <div class="mc"><div class="mv">24g</div><div class="ml">Carbs</div></div>
+          <div class="mc"><div class="mv">5g</div><div class="ml">Fat</div></div>
+        </div>
+      </div>
+
+      <div class="fcard reveal d7">
+        <div class="cap-wrap"><div class="cap-outer">
+          <div class="cap-top"></div>
+          <div class="cap-body" style="background:linear-gradient(155deg,#EA580C,#FCD34D);">
+            <div class="cap-lbl"><div class="cap-brand">Muse Macros</div><div class="cap-name" style="color:#C2410C;">Passion-<br>fruit</div></div>
+          </div>
+        </div></div>
+        <div class="fn">Passionfruit</div>
+        <div class="fd">Maracuyá · turmeric · tangerine</div>
+        <div class="macro-row">
+          <div class="mc"><div class="mv">30g</div><div class="ml">Protein</div></div>
+          <div class="mc"><div class="mv">245</div><div class="ml">Cal</div></div>
+          <div class="mc"><div class="mv">21g</div><div class="ml">Carbs</div></div>
+          <div class="mc"><div class="mv">5g</div><div class="ml">Fat</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section" id="reviews">
+  <div class="wrap">
+    <div style="text-align:center;">
+      <div class="eyebrow reveal" style="justify-content:center;">Real People. Real Results.</div>
+      <h2 class="h2 reveal d1" style="text-align:center;">The smoothie you'll<br>actually finish.</h2>
+    </div>
+    <div class="tcarousel-wrap reveal d2">
+      <button class="tcar-btn tcar-prev" aria-label="Previous">&#8592;</button>
+      <div class="tcar-track-outer">
+        <div class="tcar-track" id="tcarTrack">
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #7C3AED, #A78BFA);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Maya T.</div>
+                <div class="tcar-flavor">Ube Coconut</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #16A34A, #4ADE80);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">James K.</div>
+                <div class="tcar-flavor">Pandan</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #EC4899, #F43F5E);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Sophie & Rafael</div>
+                <div class="tcar-flavor">Dragon Fruit</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #D97706, #F59E0B);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Alex M.</div>
+                <div class="tcar-flavor">Mango Sticky Rice</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #EA580C, #FB923C);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Taylor C.</div>
+                <div class="tcar-flavor">Passionfruit</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcar-card" style="background: linear-gradient(155deg, #65A30D, #84CC16);">
+            <div class="tcar-overlay">
+              <div></div>
+              <div class="play-icon">&#9654;</div>
+              <div class="tcar-meta">
+                <div class="tcar-name">Jordan K.</div>
+                <div class="tcar-flavor">Calamansi</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <button class="tcar-btn tcar-next" aria-label="Next">&#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="wrap">
+    <div class="eyebrow reveal">Got Questions?</div>
+    <h2 class="h2 reveal d1">Everything you<br>need to know.</h2>
+    <div class="faq-layout">
+      <div class="reveal d2">
+
+        <div class="faq-item">
+          <div class="faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">Where does the 30g of protein come from?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-body"><p class="faq-a">We use a blend of whey isolate and plant-based pea protein — depending on the flavor — to hit our protein targets without altering the taste. No mysterious "protein blends" with hidden ingredients.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">How fresh are the smoothies?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-body"><p class="faq-a">All bottles are cold-blended within 48 hours of your order and stay fresh for 5 days refrigerated. We don't make batches in advance — your order triggers the blend.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">Are any flavors dairy-free or vegan?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-body"><p class="faq-a">Yes — Dragon Fruit, Calamansi, and Passionfruit are fully plant-based and dairy-free. All other flavors use whey isolate from grass-fed cows. Each product page lists full dietary details.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">Can I subscribe for weekly deliveries?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-body"><p class="faq-a">Subscriptions are coming soon. Right now we offer one-time orders with free local delivery in the GTA. Sign up to our newsletter to be first in line when subscriptions launch.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">Do you use artificial sweeteners?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-body"><p class="faq-a">Never. Sweetness comes from whole fruits and a small amount of raw honey or maple depending on the flavor. No stevia, sucralose, aspartame, or any artificial sweetener.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">How do I order?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-body"><p class="faq-a">Click "Shop Now," choose your flavors and quantity, and checkout. We deliver refrigerated in insulated packaging. Same-day delivery available in select Toronto areas.</p></div>
+        </div>
+
+      </div>
+
+      <div class="faq-side reveal d3">
+        <div class="faq-side-h">Still have questions?</div>
+        <p class="faq-side-p">Our team is available 7 days a week. We respond to every message — usually within a few hours.</p>
+        <a href="mailto:hello@musemacros.ca" class="btn-white">
+          Contact Us
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER V2 — Brand Moment ===================== -->
+<footer class="footer-v2">
+  <div class="footer-v2-inner">
+
+    <div class="footer-v2-logo">Muse<span>Macros</span></div>
+
+    <p class="footer-v2-statement">Fuel differently.<br>No shortcuts. No fillers.</p>
+
+    <a href="#flavors" class="btn-footer-cta">
+      Build Your Box
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <div class="footer-v2-divider"></div>
+
+    <nav class="footer-v2-links">
+      <a href="#flavors">Flavors</a>
+      <a href="#fwc">Our Story</a>
+      <a href="#faq">FAQ</a>
+      <a href="mailto:hello@musemacros.ca">Contact</a>
+    </nav>
+
+    <div class="footer-v2-socials">
+      <a href="#" class="footer-v2-soc" aria-label="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.6)" stroke="none"/></svg>
+      </a>
+      <a href="#" class="footer-v2-soc" aria-label="TikTok">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.94a8.16 8.16 0 004.77 1.52V7.02a4.85 4.85 0 01-1-.33z"/></svg>
+      </a>
+      <a href="mailto:hello@musemacros.ca" class="footer-v2-soc" aria-label="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M22 6L12 13 2 6"/></svg>
+      </a>
+    </div>
+
+    <p class="footer-v2-copy">© 2025 Muse Macros. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // Nav: increase glassmorphism opacity on scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Hamburger
+  const hbg = document.getElementById('hamburger');
+  const mnav = document.getElementById('mobile-nav');
+  hbg.addEventListener('click', () => {
+    hbg.classList.toggle('active');
+    mnav.classList.toggle('open');
+  });
+  mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hbg.classList.remove('active');
+    mnav.classList.remove('open');
+  }));
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Immediately show hero elements
+  document.querySelectorAll('.hero-bg .reveal').forEach(el => {
+    setTimeout(() => el.classList.add('visible'), 100);
+  });
+
+  // Testimonial carousel
+  (function() {
+    const track = document.getElementById('tcarTrack');
+    if (!track) return;
+    const prev = document.querySelector('.tcar-prev');
+    const next = document.querySelector('.tcar-next');
+    const cardW = 216 + 14;
+    let idx = 0;
+    const totalCards = track.querySelectorAll('.tcar-card').length;
+
+    function update() {
+      const visible = Math.floor(track.parentElement.offsetWidth / cardW);
+      const maxIdx = Math.max(0, totalCards - visible);
+      idx = Math.min(idx, maxIdx);
+      track.style.transform = `translateX(-${idx * cardW}px)`;
+      prev.disabled = idx === 0;
+      next.disabled = idx >= maxIdx;
+    }
+
+    prev.addEventListener('click', () => { idx = Math.max(0, idx - 1); update(); });
+    next.addEventListener('click', () => {
+      const visible = Math.floor(track.parentElement.offsetWidth / cardW);
+      idx = Math.min(totalCards - visible, idx + 1);
+      update();
+    });
+
+    update();
+    window.addEventListener('resize', update);
+  })();
+
+  // FAQ accordion
+  function toggleFaq(trigger) {
+    const item = trigger.parentElement;
+    const body = item.querySelector('.faq-body');
+    const wasActive = item.classList.contains('active');
+    document.querySelectorAll('.faq-item.active').forEach(i => {
+      i.classList.remove('active');
+      i.querySelector('.faq-body').classList.remove('open');
+    });
+    if (!wasActive) {
+      item.classList.add('active');
+      body.classList.add('open');
+    }
+  }
+</script>
+</body>
+</html>
